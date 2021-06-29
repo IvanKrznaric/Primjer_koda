@@ -1,0 +1,110 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_LENGHT 30
+
+/*Implementacija multi-skupa pomoæu sortirane vezane liste, a tu listu moram implementirati pomoæu kursora*/
+
+typedef char elementtype;
+
+typedef struct cell_tag{
+    elementtype element;
+    int kratnost;
+    int next;
+} celltype;
+
+
+int avail = 0;
+int t = 0; /*pomoću ove varijable pamtim pozivam li MuMakeNull prvi put ili ne*/
+celltype SPACE[MAX_LENGHT];
+typedef int MultiSet;
+
+void MuMakeNull(MultiSet *A){
+    if (t == 0){
+        int i;
+        for(i = 0; i < MAX_LENGHT-1; i++){
+            SPACE[i].next = i+1; /*dakle, slobodnu memoriju vežem*/
+        }
+        SPACE[i].next = -2; /*zadnja ćelija */
+        t = 1;
+    }
+
+    if (SPACE[avail].next = -2){
+        printf("Nema mjesta.");
+    }
+
+    /*slučaj kada početni multiskup nije bio prazan*/
+    *A = avail;
+    avail = SPACE[avail].next;
+    SPACE[*A].next = -1; /*označavam da je polje prazno*/
+}
+
+int MuMember(elementtype x, MultiSet A){
+    int rezultat = 0;
+    int i = SPACE[A].next, j;
+    for(j = i; j < MAX_LENGHT; j = SPACE[j].next){
+        if (SPACE[j].element == x){
+            rezultat = 1;
+            break;
+        }
+    }
+    return rezultat;
+}
+
+void MuInsert(elementtype x, MultiSet *A){
+    int i = *A;
+    int j;
+    int status = 0;
+    for(j = i; j <= -1; j = SPACE[j].next){
+            if(SPACE[j].element == x){
+                SPACE[j].kratnost ++;
+                status = 1;
+                break;
+            }
+
+    }
+    if (status == 0){ /*x se ne nalazi u multiskupu, moram ga dodati*/
+            int temp = SPACE[avail].next;
+            int temp2 = SPACE[*A].next;
+            SPACE[avail].element = x;
+            SPACE[avail].kratnost = 1;
+            SPACE[avail].next = temp2;
+            SPACE[avail].next = temp;
+}
+}
+
+elementtype MuMin(MultiSet A){
+    elementtype min = SPACE[SPACE[A].next].element;
+    int i = SPACE[A].next;
+    int j;
+    for(j = i; j != -1; j = SPACE[j].next){
+        if (SPACE[j].element <= min){
+            min = SPACE[j].element;
+        }
+    }
+return min;
+}
+
+elementtype MuMax(MultiSet A){
+    elementtype max = SPACE[SPACE[A].next].element;
+    int i = SPACE[A].next;
+    int j;
+    for(j= i; j != -1; j = SPACE[j].next){
+        if (SPACE[j].next >= max){
+            max = SPACE[j].element;
+        }
+    }
+return max;
+}
+
+
+
+
+int main(){
+MultiSet A;
+MultiSet *Aptr;
+Aptr = &A;
+char c;
+scanf("%c", &c);
+MuInsert(c, Aptr);
+}
+
